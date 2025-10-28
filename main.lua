@@ -18,12 +18,13 @@ function _update()
 end
 
 function _draw()
-    cls()
+    cls(3)
     for n, card in pairs(room.cards) do
         print(n .. "  " .. card.name)
     end
     print("run")
     print(current_health .. "    " .. #deck, 0, 100)
+    draw_room()
 end
 
 function play_card(index)

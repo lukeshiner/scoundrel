@@ -2,6 +2,12 @@ health = "health"
 sword = "sword"
 enemy = "enemy"
 
+type_sprites = {
+    sword = 16,
+    health = 18,
+    enemy = 20
+}
+
 hearts = 1
 diamonds = 2
 spades = 3
