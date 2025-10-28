@@ -33,24 +33,81 @@ end
 
 function draw_room()
     for card_number = 1, 4 do
-        draw_card(card_number)
+        draw_card_slot(card_number)
+    end
+    draw_weapon_slot()
+    draw_run()
+end
+
+function draw_card_slot(card_number)
+    local margin = 6
+    local x = margin * card_number + room.card_size.x * (card_number - 1)
+    local y = 10
+    local x2 = x + room.card_size.x
+    local y2 = y + room.card_size.y
+    local selected
+    if current_selection() == "card" .. card_number then
+        selected = true
+        print("◆", x + room.card_size.x / 2 - 4, y - 6, 6)
+    else
+        selected = false
+    end
+    rect(x, y, x2, y2, 5)
+    if #room.cards >= card_number then
+        local card = room.cards[card_number]
+        if selected == true then
+            draw_instructions(x, y, card)
+        end
+        draw_card(x, y, card)
     end
 end
 
-function draw_card(card_number)
-    local margin = 6
-    local x = margin * card_number + room.card_size.x * (card_number - 1)
-    local y = 20
+function draw_weapon_slot()
+    local x = 18
+    local y = 64
     local x2 = x + room.card_size.x
     local y2 = y + room.card_size.y
     rect(x, y, x2, y2, 5)
-    if #room.cards >= card_number then
-        rectfill(x + 1, y + 1, x2 - 1, y2 - 1, 7)
-        card = room.cards[card_number]
-        spr(card.suit, x + 2, y + 2)
-        print(card.value, x + 10, y + 3, 0)
-        spr(card.suit, x2 - 10, y2 - 9)
-        print(card.value, x2 - 18, y2 - 8)
-        spr(type_sprites[card.type], x + 4, y + 7, 2, 2)
+end
+
+function draw_card(x, y, card)
+    local x2 = x + room.card_size.x
+    local y2 = y + room.card_size.y
+    rectfill(x + 1, y + 1, x2 - 1, y2 - 1, 7)
+    spr(card.suit, x + 2, y + 2)
+    print(card.value, x + 10, y + 3, 0)
+    spr(card.suit, x2 - 10, y2 - 9)
+    print(card.value, x2 - 18, y2 - 8)
+    spr(type_sprites[card.type], x + 4, y + 7, 2, 2)
+end
+
+function draw_run()
+    local x = 70
+    local y = 64
+    local x2 = x + 40
+    local y2 = y + 12
+    local colour = 8
+    if can_run == false then
+        colour = 5
     end
+    rectfill(x, y, x2, y2, colour)
+    print("run", x + 14, y + 4, 7)
+    if current_selection() == "run" then
+        print("◆", x + 16, y - 6, 6)
+    end
+end
+
+function draw_instructions(x, y, card)
+    local x = x + 2
+    local y = y + room.card_size.y + 2
+    if card.type == health then
+        instruction = "🅾️heal"
+    elseif card.type == sword then
+        instruction = "🅾️equip"
+        x = x - 4
+    elseif card.type == enemy then
+        instruction = " 🅾️sword\n❎unarmed"
+        x = x - 6
+    end
+    print(instruction, x, y, 7)
 end

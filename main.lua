@@ -15,14 +15,15 @@ function _update()
     if btnp(🅾️) then
         play_card(1)
     end
+    if btnp(➡️) then
+        change_selection(1)
+    elseif btnp(⬅️) then
+        change_selection(-1)
+    end
 end
 
 function _draw()
     cls(3)
-    for n, card in pairs(room.cards) do
-        print(n .. "  " .. card.name)
-    end
-    print("run")
     print(current_health .. "    " .. #deck, 0, 100)
     draw_room()
 end
