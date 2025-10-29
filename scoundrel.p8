@@ -4,6 +4,7 @@ __lua__
 #include log.lua
 #include deck.lua
 #include room.lua
+#include weapon.lua
 #include selection.lua
 #include main.lua
 __gfx__

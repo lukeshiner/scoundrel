@@ -13,7 +13,9 @@ end
 
 function _update()
     if btnp(🅾️) then
-        play_card(1)
+        handle_selection(current_selection(), false)
+    elseif btnp(❎) then
+        handle_selection(current_selection(), true)
     end
     if btnp(➡️) then
         change_selection(1)
@@ -28,13 +30,29 @@ function _draw()
     draw_room()
 end
 
-function play_card(index)
+function handle_selection(selection_text, alternate)
+    if selection_text == "run" then
+        run()
+    else
+        card_index = tonum(sub(selection_text, 5))
+        play_card(card_index, alternate)
+    end
+end
+
+function play_card(index, use_weapon)
+    local use_weapon = use_weapon or false
     card = deli(room.cards, index)
     log("play card " .. index .. ": " .. card.name)
     if card.type == enemy then
-        current_health = current_health - card.value
+        if use_weapon == true then
+            add(weapon.defeated, card)
+        else
+            current_health = current_health - card.value
+        end
     elseif card.type == health then
         current_health = current_health + card.value
+    elseif card.type == sword then
+        set_weapon(card)
     end
     if #room.cards == 1 then
         next_room()

@@ -63,17 +63,25 @@ function draw_card_slot(card_number)
 end
 
 function draw_weapon_slot()
-    local x = 18
+    local x = 8
     local y = 64
     local x2 = x + room.card_size.x
     local y2 = y + room.card_size.y
     rect(x, y, x2, y2, 5)
+    if weapon.card != nil then
+        draw_card(x, y, weapon.card)
+        for enemy_card in all(weapon.defeated) do
+            y += 8
+            draw_card(x, y, enemy_card)
+        end
+    end
 end
 
 function draw_card(x, y, card)
     local x2 = x + room.card_size.x
     local y2 = y + room.card_size.y
     rectfill(x + 1, y + 1, x2 - 1, y2 - 1, 7)
+    rect(x + 1, y + 1, x2 - 1, y2 - 1, 6)
     spr(card.suit, x + 2, y + 2)
     print(card.value, x + 10, y + 3, 0)
     spr(card.suit, x2 - 10, y2 - 9)
