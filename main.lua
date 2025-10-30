@@ -1,5 +1,4 @@
 max_health = 20
-can_run = true
 
 function reset()
     current_health = max_health
@@ -30,31 +29,60 @@ function _draw()
     draw_room()
 end
 
-function handle_selection(selection_text, alternate)
+function handle_selection(selection_text, use_alternate)
     if selection_text == "run" then
-        run()
+        if room.can_run == true then
+            run()
+        end
     else
         card_index = tonum(sub(selection_text, 5))
-        play_card(card_index, alternate)
+        card = room.cards[card_index]
+        if card != nil then
+            play_card(card, use_alternate)
+        end
     end
 end
 
-function play_card(index, use_weapon)
-    local use_weapon = use_weapon or false
-    card = deli(room.cards, index)
-    log("play card " .. index .. ": " .. card.name)
-    if card.type == enemy then
-        if use_weapon == true then
-            add(weapon.defeated, card)
-        else
-            current_health = current_health - card.value
+function play_card(card, use_alternate)
+    local use_alternate = use_alternate or false
+    log("play card " .. card_index .. ": " .. card.name .. " alternate: " .. tostr(use_alternate))
+    if use_alternate == true then
+        if card.type == enemy and can_use_weapon(card) then
+            fight_with_weapon(card)
+            del(room.cards, card)
         end
-    elseif card.type == health then
-        current_health = current_health + card.value
-    elseif card.type == sword then
-        set_weapon(card)
+    else
+        if card.type == enemy then
+            fight_barehand(card)
+            del(room.cards, card)
+        elseif card.type == health then
+            take_potion(card)
+            del(room.cards, card)
+        elseif card.type == sword then
+            equip_weapon(card)
+            del(room.cards, card)
+        end
     end
     if #room.cards == 1 then
         next_room()
     end
+end
+
+function take_potion(card)
+    if room.potion_taken == false then
+        room.potion_taken = true
+        current_health = min(current_health + card.value, max_health)
+    end
+end
+
+function equip_weapon(card)
+    set_weapon(card)
+end
+
+function fight_barehand(card)
+    current_health -= card.value
+end
+
+function fight_with_weapon(card)
+    use_weapon(card)
 end

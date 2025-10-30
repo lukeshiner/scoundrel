@@ -1,5 +1,7 @@
 room = {
     cards = {},
+    potion_taken = false,
+    can_run = true,
     card_size = { x = 24, y = 32 },
     positions = {
         8, 40, 60, 90
@@ -17,7 +19,8 @@ function refill_room()
 end
 
 function next_room()
-    can_run = true
+    room.can_run = true
+    room.potion_taken = false
     refill_room()
 end
 
@@ -27,7 +30,7 @@ function run()
         add(deck, card)
     end
     room.cards = {}
-    can_run = false
+    room.can_run = false
     refill_room()
 end
 
@@ -83,9 +86,9 @@ function draw_card(x, y, card)
     rectfill(x + 1, y + 1, x2 - 1, y2 - 1, 7)
     rect(x + 1, y + 1, x2 - 1, y2 - 1, 6)
     spr(card.suit, x + 2, y + 2)
-    print(card.value, x + 10, y + 3, 0)
+    print(card.text_value, x + 10, y + 3, 0)
     spr(card.suit, x2 - 10, y2 - 9)
-    print(card.value, x2 - 18, y2 - 8)
+    print(card.text_value, x2 - 18, y2 - 8)
     spr(type_sprites[card.type], x + 4, y + 7, 2, 2)
 end
 
@@ -95,7 +98,7 @@ function draw_run()
     local x2 = x + 40
     local y2 = y + 12
     local colour = 8
-    if can_run == false then
+    if room.can_run == false then
         colour = 5
     end
     rectfill(x, y, x2, y2, colour)
@@ -114,7 +117,10 @@ function draw_instructions(x, y, card)
         instruction = "🅾️equip"
         x = x - 4
     elseif card.type == enemy then
-        instruction = " 🅾️sword\n❎unarmed"
+        instruction = "❎unarmed"
+        if can_use_weapon(card) then
+            instruction = instruction .. "\n🅾️sword"
+        end
         x = x - 6
     end
     print(instruction, x, y, 7)
