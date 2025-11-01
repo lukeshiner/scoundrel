@@ -6,6 +6,8 @@ __lua__
 #include room.lua
 #include weapon.lua
 #include selection.lua
+#include scoundrel.lua
+#include game_over.lua
 #include main.lua
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

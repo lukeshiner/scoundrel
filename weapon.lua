@@ -1,7 +1,11 @@
-weapon = {
-    card = nil,
-    defeated = {}
-}
+weapon = nil
+
+function reset_weapon()
+    weapon = {
+        card = nil,
+        defeated = {}
+    }
+end
 
 function set_weapon(card)
     weapon.card = card

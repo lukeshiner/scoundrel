@@ -1,13 +1,18 @@
-room = {
-    cards = {},
-    potion_taken = false,
-    can_run = true,
-    card_size = { x = 24, y = 32 },
-    positions = {
-        8, 40, 60, 90
-    },
-    room_number = 0
-}
+room = nil
+
+function reset_room()
+    room = {
+        cards = {},
+        potion_taken = false,
+        can_run = true,
+        card_size = { x = 24, y = 32 },
+        positions = {
+            8, 40, 60, 90
+        },
+        room_number = 0
+    }
+    next_room()
+end
 
 function refill_room()
     while #room.cards < 4 do
@@ -18,11 +23,11 @@ function refill_room()
         end
     end
     room.room_number += 1
+    room.potion_taken = false
 end
 
 function next_room()
     room.can_run = true
-    room.potion_taken = false
     refill_room()
 end
 
