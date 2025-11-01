@@ -40,6 +40,7 @@ function draw_room()
     end
     draw_weapon_slot()
     draw_run()
+    draw_health()
 end
 
 function draw_card_slot(card_number)
@@ -93,7 +94,7 @@ function draw_card(x, y, card)
 end
 
 function draw_run()
-    local x = 70
+    local x = 50
     local y = 64
     local x2 = x + 40
     local y2 = y + 12
@@ -124,4 +125,13 @@ function draw_instructions(x, y, card)
         x = x - 6
     end
     print(instruction, x, y, 7)
+end
+
+function draw_health()
+    local x = 110
+    local y = 100
+    rect(x, y, x - 5, y - 41, 7)
+    rectfill(x - 1, y - 1, x - 4, y - (current_health * 2), 8)
+    print("♥", x - 10, y + 2, 8)
+    print(current_health, x - 2, y + 2, 7)
 end

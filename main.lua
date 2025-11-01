@@ -24,7 +24,7 @@ function _update()
 end
 
 function _draw()
-    cls(3)
+    cls(1)
     print(current_health .. "    " .. #deck, 0, 100)
     draw_room()
 end
