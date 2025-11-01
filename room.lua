@@ -5,7 +5,8 @@ room = {
     card_size = { x = 24, y = 32 },
     positions = {
         8, 40, 60, 90
-    }
+    },
+    room_number = 0
 }
 
 function refill_room()
@@ -16,6 +17,7 @@ function refill_room()
             break
         end
     end
+    room.room_number += 1
 end
 
 function next_room()
@@ -34,6 +36,10 @@ function run()
     refill_room()
 end
 
+function rooms_remaining()
+    return ceil(#deck / 3)
+end
+
 function draw_room()
     for card_number = 1, 4 do
         draw_card_slot(card_number)
@@ -41,6 +47,7 @@ function draw_room()
     draw_weapon_slot()
     draw_run()
     draw_health()
+    draw_stats()
 end
 
 function draw_card_slot(card_number)
@@ -103,6 +110,7 @@ function draw_run()
         colour = 5
     end
     rectfill(x, y, x2, y2, colour)
+    rect(x, y, x2, y2, 5)
     print("run", x + 14, y + 4, 7)
     if current_selection() == "run" then
         print("◆", x + 16, y - 6, 6)
@@ -118,9 +126,9 @@ function draw_instructions(x, y, card)
         instruction = "🅾️equip"
         x = x - 4
     elseif card.type == enemy then
-        instruction = "🅾️sword"
+        instruction = "🅾️unarmed"
         if can_use_weapon(card) then
-            instruction = instruction .. "\n❎unarmed"
+            instruction = "🅾️sword\n❎unarmed"
         end
         x = x - 6
     end
@@ -134,4 +142,9 @@ function draw_health()
     rectfill(x - 1, y - 1, x - 4, y - (current_health * 2), 8)
     print("♥", x - 10, y + 2, 8)
     print(current_health, x - 2, y + 2, 7)
+end
+
+function draw_stats()
+    print("room " .. room.room_number, 50, 78, 7)
+    print("remaining " .. rooms_remaining())
 end

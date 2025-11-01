@@ -25,7 +25,6 @@ end
 
 function _draw()
     cls(1)
-    print(current_health .. "    " .. #deck, 0, 100)
     draw_room()
 end
 
