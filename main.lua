@@ -48,12 +48,16 @@ function play_card(card, use_alternate)
     log("play card " .. card_index .. ": " .. card.name .. " alternate: " .. tostr(use_alternate))
     if use_alternate == true then
         if card.type == enemy and can_use_weapon(card) then
-            fight_with_weapon(card)
+            fight_barehand(card)
             del(room.cards, card)
         end
     else
         if card.type == enemy then
-            fight_barehand(card)
+            if can_use_weapon(card) then
+                fight_with_weapon(card)
+            else
+                fight_barehand(card)
+            end
             del(room.cards, card)
         elseif card.type == health then
             take_potion(card)

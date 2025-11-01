@@ -118,9 +118,9 @@ function draw_instructions(x, y, card)
         instruction = "🅾️equip"
         x = x - 4
     elseif card.type == enemy then
-        instruction = "❎unarmed"
+        instruction = "🅾️sword"
         if can_use_weapon(card) then
-            instruction = instruction .. "\n🅾️sword"
+            instruction = instruction .. "\n❎unarmed"
         end
         x = x - 6
     end
