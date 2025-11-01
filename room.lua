@@ -126,7 +126,12 @@ function draw_instructions(x, y, card)
     local x = x + 2
     local y = y + room.card_size.y + 2
     if card.type == health then
-        instruction = "🅾️heal"
+        if room.potion_taken == false then
+            instruction = "🅾️heal"
+        else
+            instruction = "🅾️discard"
+            x = x - 6
+        end
     elseif card.type == sword then
         instruction = "🅾️equip"
         x = x - 4
